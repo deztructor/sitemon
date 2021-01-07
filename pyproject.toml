@@ -79,6 +79,13 @@ disabled = [
          'KeywordDetector',
 ]
 
+[tool.tidypy.yamllint]
+disabled = [
+    'document-start',
+    'empty-lines',
+    'truthy',
+]
+
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
