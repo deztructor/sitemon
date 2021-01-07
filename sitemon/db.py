@@ -49,6 +49,7 @@ create table site_info (
     search_expression text,
     primary key (url, search_expression)
 );
+create index url_index on site_info (url);
 
 create table site_state (
     id bigserial unique,
@@ -179,6 +180,16 @@ class SiteState:
             status.is_match_found,
         )
 
+    async def gen_url_state(self, url: str):
+        """Extract all records for the site state."""
+        async with self.connection.transaction():
+            async for record in self.connection.cursor(
+                    "select * from site_info, site_state "
+                    " where site_state.site_info_id = site_info.id and site_info.url = $1",
+                    url,
+            ):
+                yield record
+
 
 def add_db_conn_argument(parser: argparse.ArgumentParser):
     """Add documented DB connection JSON parameter to ArgumentParser."""
@@ -223,3 +234,32 @@ async def recreate_db(db_conn, admin, db):
     db = Db(**read_json_file(db))
     async with connection_context(dsn) as connection:
         await db.recreate(connection)
+
+
+def get_url_state(args=None):
+    """Print all state records for url."""
+
+    parser = argparse.ArgumentParser()
+    add_db_conn_argument(parser)
+    parser.add_argument(
+        "--db",
+        required=True,
+        help=(
+            "JSON file describing site monitor DB in the format:\n\n"
+            + USER_DB_JSON_EXAMPLE
+        ),
+    )
+    parser.add_argument(
+        "url",
+        help="URL to search",
+    )
+    asyncio.run(_get_url_state(parser.parse_args(args)))
+    sys.exit(0)
+
+
+async def _get_url_state(info):
+    dsn = Dsn(**read_json_file(info.db_conn), **read_json_file(info.db))
+    async with connection_context(dsn) as connection:
+        site_state = SiteState(connection)
+        async for record in site_state.gen_url_state(info.url):
+            print(record)

@@ -24,6 +24,7 @@ pytest-mypy = "^0.8.0"
 recreate-sitemon-db = "sitemon.db:recreate"
 sitemon-recorder = "sitemon.recorder:main"
 sitemon-monitor = "sitemon.monitor:main"
+sitemon-url-state = "sitemon.db:get_url_state"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
