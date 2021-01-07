@@ -21,6 +21,7 @@ tidypy = "^0.18.0"
 pytest-mypy = "^0.8.0"
 
 [tool.poetry.scripts]
+recreate-sitemon-db = "sitemon.db:recreate"
 sitemon-monitor = "sitemon.monitor:main"
 
 [tool.pytest.ini_options]
