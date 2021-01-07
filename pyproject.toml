@@ -20,6 +20,9 @@ pytest-cov = "^2.10.1"
 tidypy = "^0.18.0"
 pytest-mypy = "^0.8.0"
 
+[tool.poetry.scripts]
+sitemon-monitor = "sitemon.monitor:main"
+
 [tool.pytest.ini_options]
 minversion = "6.0"
 addopts = "" # --verbose --mypy --tidypy

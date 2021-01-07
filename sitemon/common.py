@@ -1,6 +1,7 @@
 """Contains functionality used by all modules."""
 
 from dataclasses import dataclass
+import json
 
 
 #: Topic used to pass monitored status Kafka messages.
@@ -31,3 +32,13 @@ class SiteStatus:
 
     is_match_found: bool
     """Indicate was text corresponding to `match` found."""
+
+
+def read_json_file(path: str) -> dict:
+    """
+    Read JSON as dict from file.
+
+    Get rid of the syntactic trash in places where JSON should be read.
+    """
+    with open(path) as f:
+        return json.load(f)
