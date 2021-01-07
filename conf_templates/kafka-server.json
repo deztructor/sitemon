@@ -1,0 +1,9 @@
+{
+    "host": "somehost.aivencloud.com",
+    "port": 13864,
+    "ssl": {
+        "cafile": "./ca.pem",
+        "certfile": "./service.cert",
+        "keyfile": "./service.key"
+    }
+}
