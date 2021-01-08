@@ -83,6 +83,22 @@ To run them manually (assuming that development environment is installed by poet
 poetry run pytest --disable-pytest-warnings --tidypy --mypy
 ```
 
+### E2E Testing
+
+There is a E2E test executing one iteration of site monitoring and checking that data was saved to the DB.
+To get it working, one should provide configuration (as described in the corresponding section).
+While for testing `sitemon-db.json` should contain different user and DB name: the target database and user are re-created.
+To run test, execute:
+
+``` sh
+poetry run python3 ./e2e_tests/e2e-test-monitor.py \
+    --db-conn $CONF_DIR/pg-local.json \
+    --kafka $CONF_DIR/kafka-local.json \
+    --admin $CONF_DIR/db-admin-local.json \
+    --url https://google.com \
+    $CONF_DIR/test-db.json
+```
+
 ## TODO
 
 - Service scripts do not try to re-connect to Kafka and PostgreSQL if connection is interrupted;
